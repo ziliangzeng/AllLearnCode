@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="aService" class="com.learn.code.minioSpring.com.minis.test.AServiceImpl"/>
+</beans>
