@@ -30,6 +30,10 @@ public class ClassPathXmlResource implements Resource{
         }
     }
 
+    /**
+     * 读取资源，然后提供一个对外的获取资源的方式
+     * @return
+     */
     @Override
     public boolean hasNext() {
         return this.elementIterator.hasNext();

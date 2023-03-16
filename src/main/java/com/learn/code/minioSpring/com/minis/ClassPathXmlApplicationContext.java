@@ -22,7 +22,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
 
     public ClassPathXmlApplicationContext(String fileName) {
         //获取资源
-        ClassPathXmlResource resource = new ClassPathXmlResource(fileName);
+        Resource resource = new ClassPathXmlResource(fileName);
         //创建beanFactory
         BeanFactory beanFactory = new SimpleBeanFactory();
         //创建资源读取器，读取并且解析资源，插入到beanFactory中
@@ -43,6 +43,16 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
     @Override
     public void registerBeanDefinition(BeanDefinition beanDefinition) {
         this.beanFactory.registerBeanDefinition(beanDefinition);
+    }
+
+    @Override
+    public Boolean containsBean(String beanName) {
+        return null;
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+
     }
 
 }

@@ -52,4 +52,14 @@ public class SimpleBeanFactory implements BeanFactory{
         this.beanDefinitions.add(beanDefinition);
         this.beanNames.add(beanDefinition.getId());
     }
+
+    @Override
+    public Boolean containsBean(String beanName) {
+        return null;
+    }
+
+    @Override
+    public void registerBean(String beanName, Object obj) {
+
+    }
 }
