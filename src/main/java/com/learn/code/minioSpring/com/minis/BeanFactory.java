@@ -7,4 +7,10 @@ public interface BeanFactory {
 
     Boolean containsBean(String beanName);
     void registerBean(String beanName,Object obj);
+
+    boolean isSingleton(String beanName);
+    boolean isPrototype(String beanName);
+
+    Class<?> getType(String beanName);
+
 }
