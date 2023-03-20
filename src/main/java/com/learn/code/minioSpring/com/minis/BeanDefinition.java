@@ -18,7 +18,22 @@ public class BeanDefinition {
 
     private String id;
     private String className;
+
+
     private String scope = SCOPE_SINGLETON;
+
+
+    /**
+     * 暂时没有的方法,看后面的篇章
+     * @return
+     */
+    public boolean isSingleton() {
+        return SCOPE_SINGLETON.equals(this.scope);
+    }
+    public boolean isPrototype() {
+        return SCOPE_PROTOTYPE.equals(this.scope);
+    }
+
 
     public BeanDefinition(String id, String className) {
         this.id = id;

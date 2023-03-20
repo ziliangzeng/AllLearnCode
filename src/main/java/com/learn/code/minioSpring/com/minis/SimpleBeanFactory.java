@@ -6,13 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 根据继承的DefaultSingletonBeanRegistry,可以看出这个类是一个单例注册表,用于存储bean
+ * beanFactory,同时也是一个创建bean的工厂
+ * BeanDefinitionRegistry,那么也是存储bean定义的地方罗
+ */
 public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
 
     private Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
     private List<String> beanDefinitionNames = new ArrayList<>();
 
-    //为什么用List？ 为什么不用set？
+    /**
+     * TODO 应该是待删除,跟上面的重复了
+     */
     private Map<String, BeanDefinition> beanDefinitions = new ConcurrentHashMap<>();
+    //为什么用List？ 为什么不用set？
 //   private List<String> beanNames = new ArrayList<String>();
 //
 //   private Map<String,Object> singletons = new HashMap<>();
@@ -79,6 +87,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 
     @Override
     public boolean isSingleton(String beanName) {
+        //TODO 这里有问题,暂时根据意思创建好方法,看后面的发展
         return beanDefinitionMap.get(beanName).isSingleton();
     }
 
