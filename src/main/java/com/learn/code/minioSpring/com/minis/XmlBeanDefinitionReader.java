@@ -2,6 +2,8 @@ package com.learn.code.minioSpring.com.minis;
 
 import org.dom4j.Element;
 
+import java.util.List;
+
 public class XmlBeanDefinitionReader {
 
     BeanFactory beanFactory;
@@ -28,6 +30,29 @@ public class XmlBeanDefinitionReader {
             String id = element.attributeValue("id");
             String aClass = element.attributeValue("class");
             BeanDefinition beanDefinition = new BeanDefinition(id, aClass);
+
+            List<Element> propertyElements = element.elements("property");
+            PropertyValues pvs = new PropertyValues();
+            for (Element e : propertyElements) {
+                String name = e.attributeValue("name");
+                String value = e.attributeValue("value");
+                String type = e.attributeValue("type");
+                pvs.addPropertyValue(new PropertyValue(name, value, type));
+            }
+            beanDefinition.setPropertyValues(pvs);
+
+
+            List<Element> constructorElements = element.elements("constructor-arg");
+            ArgumentValues argumentValues = new ArgumentValues();
+            for (Element e : constructorElements) {
+                String name = e.attributeValue("name");
+                String value = e.attributeValue("value");
+                String type = e.attributeValue("type");
+                argumentValues.addArgumentValue(new ArgumentValue(name, value, type));
+            }
+            beanDefinition.setConstructorArgumentValues(argumentValues);
+
+
             this.beanFactory.registerBeanDefinition(beanDefinition);
         }
     }
