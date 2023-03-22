@@ -1,5 +1,7 @@
 package com.learn.code.minioSpring.com.minis;
 
+import com.learn.code.minioSpring.com.minis.test.AServiceImpl;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -155,6 +157,13 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             ArgumentValues argumentValues = beanDefinition.getConstructorArgumentValues();
             PropertyValues propertyValues = beanDefinition.getPropertyValues();
 
+            /**
+             * 根据resource资源，顺序存储进两个数组里面 Class<?>[] Object<?>[]
+             * con = Class.getConstructor(Class<?>... parameterTypes)
+             * obj = con.newInstance(Object... initargs)
+             *
+             * 通过Class获取构造器，然后通过构造器实例化对象
+             */
             if (!argumentValues.isEmpty()) {
                 Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
                 Object[] paramValues = new Object[argumentValues.getArgumentCount()];
@@ -176,14 +185,33 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                         paramValues[i] = indexedArgumentValue.getValue();
                     }
                 }
+
+                //clz.getConstructor(paramTypes)是获取指定参数类型的构造器,他需要提前在实体类中创建一个构造器吗？
+                //不需要,因为这里是通过反射来获取的,所以不需要在实体类中创建一个构造器.
+                //好像我查的源码告诉我，好像是需要在实体类中定义个构造器的.，否则是无法反射调用获取到这个构造器的吧？
+                /**
+                 *  TODO 很简单的验证，后面把AServiceImpl的构造器注释掉，因该是会报错的！？
+                 * {@link com.learn.code.minioSpring.com.minis.test.AServiceImpl#AServiceImpl(java.lang.String, int)}
+                 */
                 con = clz.getConstructor(paramTypes);
                 //TODO
                 //构造器的newInstance(...) 和 Class的newInstance()有什么区别？
                 //应该不需要在实体类创建一个按照顺序来的构造器吧？
                 //Constructor 就是新创建一个构造器,构造函数.所以argumentValues.name不重要(不需要),因为对于用户来讲是透明的.
+
+
+                //翻看Class#newInstance()的源码,发现是调用了Constructor#newInstance()的方法.
+                //所以本质上是一个东西，只不过Class#newInstance()是默认调用无参构造器的.
                 obj = con.newInstance(paramValues);
             }
-
+            /**
+             * 上面通过构造器进行实例化了，下一步所以要进行属性注入，这里是通过反射来进行属性注入
+             * 通过Class获取属性，然后通过属性的set方法进行注入
+             * 上一步Class，Object都拿到了。所以这一步只需要拿到反射方法的名称，参数类型，参数值进行方法反射调用即可
+             * Method method = cla.getMethod("set" + name, paramTypes)
+             * 验证，把他给注释掉，会发生什么呢 {@link AServiceImpl#setName(String)}
+             * method.invoke(obj, paramValues)
+             */
             if (!propertyValues.isEmpty()) {
                 //TODO
                 //还是不明白为什么属性要设置为final?
@@ -202,7 +230,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                         paramTypes[0] = Integer.class;
                     } else if ("int".equals(type)) {
                         paramTypes[0] = int.class;
-                    }else {
+                    } else {
                         paramTypes[0] = String.class;
                     }
 
@@ -213,6 +241,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                     String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
 
                     Method method = clz.getMethod(methodName, paramTypes);
+
                     method.invoke(obj, paramValues);
 
                 }
