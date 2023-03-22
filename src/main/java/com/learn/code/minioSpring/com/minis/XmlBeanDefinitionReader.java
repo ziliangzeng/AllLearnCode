@@ -42,6 +42,10 @@ public class XmlBeanDefinitionReader {
                 String ref = e.attributeValue("ref");
                 String pv = "";
                 boolean isRef = false;
+                //这里没有问题,就是判断ref是否存在值
+                //那么我是否可以理解就是,在<property>标签中,value和ref是不能共存的呢?
+                //因为这里是一个if else的判断,如果value存在值,那么就不会去判断ref是否存在值
+                //那么怎么控制的呢? 我感觉应该是 if if 的关系才对
                 if (value != null && !value.equals("")) {
                     isRef = false;
                     pv = value;
@@ -56,7 +60,8 @@ public class XmlBeanDefinitionReader {
 
             //循环依赖递归
             //那么创建对象createBean的时候就需要不断的循环下去去创建对象，直到所有的对象都创建完毕。
-            String[] refArray = refs.toArray(new String[refs.size()]);
+            //当list集合泛型为String的时候,那么不需要指定数组的大小,可以直接new String[0] TODO 为什么？
+            String[] refArray = refs.toArray(new String[0]);
             beanDefinition.setDependsOn(refArray);
 
             List<Element> constructorElements = element.elements("constructor-arg");
