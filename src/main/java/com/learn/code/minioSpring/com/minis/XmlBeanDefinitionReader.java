@@ -2,6 +2,7 @@ package com.learn.code.minioSpring.com.minis;
 
 import org.dom4j.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class XmlBeanDefinitionReader {
@@ -14,7 +15,7 @@ public class XmlBeanDefinitionReader {
      *
      * @param beanFactory
      */
-    public XmlBeanDefinitionReader(BeanFactory beanFactory){
+    public XmlBeanDefinitionReader(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 
@@ -23,24 +24,40 @@ public class XmlBeanDefinitionReader {
      *
      * @param resource
      */
-    public void loadBeanDefinitions(Resource resource){
+    public void loadBeanDefinitions(Resource resource) {
         //这里就是承上启下了，迭代器的设计模式，就是这样的
-        while(resource.hasNext()){
-            Element element = (Element)resource.next();
+        while (resource.hasNext()) {
+            Element element = (Element) resource.next();
             String id = element.attributeValue("id");
             String aClass = element.attributeValue("class");
             BeanDefinition beanDefinition = new BeanDefinition(id, aClass);
 
             List<Element> propertyElements = element.elements("property");
             PropertyValues pvs = new PropertyValues();
+            List<String> refs = new ArrayList<>();
             for (Element e : propertyElements) {
                 String name = e.attributeValue("name");
                 String value = e.attributeValue("value");
                 String type = e.attributeValue("type");
-                pvs.addPropertyValue(new PropertyValue(name, value, type));
+                String ref = e.attributeValue("ref");
+                String pv = "";
+                boolean isRef = false;
+                if (value != null && !value.equals("")) {
+                    isRef = false;
+                    pv = value;
+                } else if (ref != null && !ref.equals("")) {
+                    isRef = true;
+                    pv = ref;
+                    refs.add(ref);
+                }
+                pvs.addPropertyValue(new PropertyValue(name, pv, type, isRef));
             }
             beanDefinition.setPropertyValues(pvs);
 
+            //循环依赖递归
+            //那么创建对象createBean的时候就需要不断的循环下去去创建对象，直到所有的对象都创建完毕。
+            String[] refArray = refs.toArray(new String[refs.size()]);
+            beanDefinition.setDependsOn(refArray);
 
             List<Element> constructorElements = element.elements("constructor-arg");
             ArgumentValues argumentValues = new ArgumentValues();

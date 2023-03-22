@@ -5,17 +5,21 @@ public class PropertyValue {
     private final String type;
     private final String name;
     private final Object value;
+    private final boolean isRef;
 
-    public PropertyValue(String type, String name, Object value) {
+    public PropertyValue(String type, String name, Object value,boolean isRef) {
         this.type = type;
         this.name = name;
         this.value = value;
+        this.isRef = isRef;
     }
 
     public PropertyValue(String name, Object value) {
         this.type = null;
         this.name = name;
         this.value = value;
+        //?这样子就有问题哦,每次都需要全量注入
+        this.isRef = false;
     }
 
     /**
@@ -47,5 +51,9 @@ public class PropertyValue {
 
     public String getType() {
         return type;
+    }
+
+    public boolean getIsRef() {
+        return isRef;
     }
 }

@@ -222,20 +222,28 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                     String name = propertyValue.getName();
                     Object value = propertyValue.getValue();
                     String type = propertyValue.getType();
+                    boolean isRef = propertyValue.getIsRef();
 
                     Class<?>[] paramTypes = new Class<?>[1];
-                    if ("String".equals(type) || "java.lang.String".equals(type)) {
-                        paramTypes[0] = String.class;
-                    } else if ("Integer".equals(type) || "java.lang.Integer".equals(type)) {
-                        paramTypes[0] = Integer.class;
-                    } else if ("int".equals(type)) {
-                        paramTypes[0] = int.class;
-                    } else {
-                        paramTypes[0] = String.class;
-                    }
-
                     Object[] paramValues = new Object[1];
-                    paramValues[0] = value;
+
+                    if (!isRef) {
+                        if ("String".equals(type) || "java.lang.String".equals(type)) {
+                            paramTypes[0] = String.class;
+                        } else if ("Integer".equals(type) || "java.lang.Integer".equals(type)) {
+                            paramTypes[0] = Integer.class;
+                        } else if ("int".equals(type)) {
+                            paramTypes[0] = int.class;
+                        } else {
+                            paramTypes[0] = String.class;
+                        }
+                        paramValues[0] = value;
+                    } else {
+                        //is ref,create the dependent beans
+                        paramTypes[0] = Class.forName(type);
+                        //TODO getBean 和 createBean 还没有关联起来
+                        paramValues[0] = getBean((String) value);
+                    }
 
                     //反射
                     String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -255,6 +263,8 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (BeansException e) {
             throw new RuntimeException(e);
         }
 

@@ -5,5 +5,18 @@
         <property type="String" name="property2" ref="Hello Earth!"/>
         <constructor-arg type="String" name="name" value="abc"/>
         <constructor-arg type="int" name="level" value="3"/>
+        <property type="com.learn.code.minioSpring.com.minis.test.BaseService" name="ref1" ref="baseservice"/>
     </bean>
+
+    <bean id="basebaseservice" class="com.learn.code.minioSpring.com.minis.test.BaseBaseService">
+        <property type="com.learn.code.minioSpring.com.minis.test.AServiceImpl" name="as" ref="aService" />
+    </bean>
+
+    <bean id="baseservice" class="com.learn.code.minioSpring.com.minis.test.BaseService">
+<property type="com.learn.code.minioSpring.com.minis.test.BaseBaseService" name="bbs" ref="basebaseservice"/>
+    </bean>
+
+
 </beans>
+
+
