@@ -31,6 +31,25 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
         this.beanFactory = beanFactory;
     }
 
+
+    public ClassPathXmlApplicationContext(String fileName, boolean isRefresh) {
+        //获取资源
+        Resource resource = new ClassPathXmlResource(fileName);
+        //创建beanFactory
+        BeanFactory beanFactory = new SimpleBeanFactory();
+        //创建资源读取器，读取并且解析资源，插入到beanFactory中
+        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+        reader.loadBeanDefinitions(resource);
+        this.beanFactory = beanFactory;
+        if(isRefresh) {
+            //TODO 没有看到BeanFactory的refresh方法，先加上了.
+            refresh();
+        }
+    }
+
+
+
+
     @Override
     public Object getBean(String beanName) {
         try {
@@ -68,6 +87,11 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
     @Override
     public Class<?> getType(String beanName) {
         return null;
+    }
+
+    @Override
+    public void refresh() {
+        this.beanFactory.refresh();
     }
 
 }

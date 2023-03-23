@@ -13,4 +13,6 @@ public interface BeanFactory {
 
     Class<?> getType(String beanName);
 
+    void refresh();
+
 }
