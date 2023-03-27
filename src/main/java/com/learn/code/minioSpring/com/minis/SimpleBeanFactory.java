@@ -169,6 +169,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
 
                         Method method = clz.getMethod(methodName, paramTypes);
 
+
                         method.invoke(obj, paramValues);
 
                     } catch (ClassNotFoundException e) {
