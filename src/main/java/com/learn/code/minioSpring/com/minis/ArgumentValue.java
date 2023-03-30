@@ -15,7 +15,7 @@ public class ArgumentValue {
         this.type = type;
     }
 
-    public ArgumentValue(Object value, String type, String name) {
+    public ArgumentValue(String name,Object value, String type) {
         this.value = value;
         this.type = type;
         this.name = name;

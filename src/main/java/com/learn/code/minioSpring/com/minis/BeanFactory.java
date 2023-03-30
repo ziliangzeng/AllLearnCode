@@ -3,7 +3,9 @@ package com.learn.code.minioSpring.com.minis;
 public interface BeanFactory {
 
     Object getBean(String beanName) throws BeansException;
-    void registerBeanDefinition(BeanDefinition beanDefinition);
+
+    //TODO 这里不应该是注册beanDefinition 后面删除
+//    void registerBeanDefinition(BeanDefinition beanDefinition);
 
     Boolean containsBean(String beanName);
     void registerBean(String beanName,Object obj);

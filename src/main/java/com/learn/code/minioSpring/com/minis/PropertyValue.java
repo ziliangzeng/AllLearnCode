@@ -7,7 +7,7 @@ public class PropertyValue {
     private final Object value;
     private final boolean isRef;
 
-    public PropertyValue(String type, String name, Object value,boolean isRef) {
+    public PropertyValue(String name, Object value, String type, boolean isRef) {
         this.type = type;
         this.name = name;
         this.value = value;

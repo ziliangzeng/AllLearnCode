@@ -1,13 +1,24 @@
 package com.learn.code.minioSpring.com.minis.test;
 
-public class BaseService {
-    private BaseBaseService bbs;
+import com.learn.code.minioSpring.com.minis.Autowired;
 
-    public BaseBaseService getBbs() {
-        return bbs;
+public class BaseService {
+
+    @Autowired
+    private BaseBaseService basebaseservice;
+
+
+    public BaseService(){}
+
+    public void sayHello(){
+        System.out.println("Base Service says hello!!");
     }
 
-    public void setBbs(BaseBaseService bbs) {
-        this.bbs = bbs;
+    public BaseBaseService getBasebaseservice() {
+        return basebaseservice;
+    }
+
+    public void setBasebaseservice(BaseBaseService basebaseservice) {
+        this.basebaseservice = basebaseservice;
     }
 }

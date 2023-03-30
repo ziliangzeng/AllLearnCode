@@ -1,12 +1,8 @@
 package com.learn.code.minioSpring.com.minis;
 
-//这个有问题,待删除
-
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-
 import java.lang.reflect.Field;
 
-public class AutowiredAnnotationBeanPostProcess implements BeanPostProcess {
+public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcess {
 
     private AutowireCapableBeanFactory beanFactory;
 
@@ -50,13 +46,10 @@ public class AutowiredAnnotationBeanPostProcess implements BeanPostProcess {
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
-
                 }
             }
         }
-
-
-        return null;
+        return result;
     }
 
     @Override
@@ -69,6 +62,12 @@ public class AutowiredAnnotationBeanPostProcess implements BeanPostProcess {
         return beanFactory;
     }
 
+    /**
+     * TODO 这里应该是AbstractBeanFactory
+     * 并且我记得在自定义后置处理器的时候，好像是不需要设置beanFactory的？
+     *
+     * @param beanFactory
+     */
     public void setBeanFactory(AutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }

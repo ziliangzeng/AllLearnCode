@@ -271,10 +271,10 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
      *
      * @param beanDefinition
      */
-    @Override
-    public void registerBeanDefinition(BeanDefinition beanDefinition) {
-        this.beanDefinitionMap.put(beanDefinition.getId(), beanDefinition);
-    }
+//    @Override
+//    public void registerBeanDefinition(BeanDefinition beanDefinition) {
+//        this.beanDefinitionMap.put(beanDefinition.getId(), beanDefinition);
+//    }
 
     @Override
     public Boolean containsBean(String beanName) {
@@ -303,7 +303,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
     }
 
     @Override
-    public void registryBeanDefinition(String beanName, BeanDefinition beanDefinition) {
+    public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(beanName, beanDefinition);
         beanDefinitionNames.add(beanName);
         if (!beanDefinition.isLazyInit()) {
