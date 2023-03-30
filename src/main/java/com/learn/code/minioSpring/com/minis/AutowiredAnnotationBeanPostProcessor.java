@@ -40,6 +40,9 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcess {
                          * TODO 如果属性设置为public呢? 这些都需要去验证一下
                          * 我个人认为设置上述的访问权限之后,就不需要进行setAccessible(true)了.
                          *
+                         * 使用fiele反射的形式进行注入,是因为,不一定有setParam()的方法?
+                         * @Autowired 注解的属性,有一些是没有set方法的
+                         *
                          */
                         field.setAccessible(true);
                         field.set(result, bean1);

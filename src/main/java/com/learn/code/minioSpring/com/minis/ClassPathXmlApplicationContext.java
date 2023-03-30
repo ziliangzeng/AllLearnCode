@@ -59,6 +59,11 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
         reader.loadBeanDefinitions(resource);
         this.beanFactory = beanFactory;
+        /**
+         * 这个isRefresh是不是有点多余,如果是false 的话,那么后置处理都不加载了?
+         * 但是getbean的整体流程又都是会调用到beanPostProcessor的
+         * TODO 这个后面需要关注一下
+         */
         if (isRefresh) {
             //TODO 没有看到BeanFactory的refresh方法，先加上了.
             refresh();
