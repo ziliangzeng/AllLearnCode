@@ -60,7 +60,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
             //尝试从已完成了实例化的bean Map中拿到对应的bean
             singleton = earlySingletonObjects.get(beanName);
             if (singleton == null) {
+
+                //这里自旋等待?
                 BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
+
                 if (beanDefinition == null) {
                     throw new RuntimeException("beanDefinition is null");
                 }
@@ -116,7 +119,17 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
     public void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(name, beanDefinition);
         beanDefinitionNames.add(name);
-        //TODO 有问题
+        /**
+         * TODO 有问题
+         * 再细看,好像又没有问题哦,只是初始化当前的bean
+         * 有问题的,因为{@link com/learn/code/minioSpring/com/minis/AbstractBeanFactory.java:239 }
+         * 以来第三方bean,属性注入的时候,二次去获取bean,这时候有可能这时候该bean的 BeanDefinition 还没有生成呢?!所以是有问题的
+         * 那么怎么解决?
+         * 如何处理这种顺序问题的? 自旋等待?
+         * 或者主动去遍历资源吗?
+         * TODO 待解答
+         *
+         */
         if(beanDefinition.isLazyInit()){
             getBean(name);
         }
