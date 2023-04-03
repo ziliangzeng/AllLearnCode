@@ -5,7 +5,10 @@ import java.util.List;
 
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowiredCapableBeanFactory{
 
-    private final List<AutowiredAnnotationBeanPostProcessor> beanPostProcessors = new ArrayList<>();
+    private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
+
+
+//    private final List<AutowiredAnnotationBeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
     public void addBeanPostProcessor(AutowiredAnnotationBeanPostProcessor beanPostProcessor) {
         beanPostProcessors.remove(beanPostProcessor);
@@ -16,7 +19,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return this.beanPostProcessors.size();
     }
 
-    public List<AutowiredAnnotationBeanPostProcessor> getBeanPostProcessors(){
+    public List<BeanPostProcessor> getBeanPostProcessors(){
         return this.beanPostProcessors;
     }
 
@@ -25,7 +28,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) {
 
         Object result = existingBean;
-        for (AutowiredAnnotationBeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             //多态，应该是AbstractBeanFactory类型的吧
             beanPostProcessor.setBeanFactory(this);
             try {
@@ -43,7 +46,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) {
         Object result = existingBean;
-        for (AutowiredAnnotationBeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             //多态，应该是AbstractBeanFactory类型的吧
             beanPostProcessor.setBeanFactory(this);
             try {

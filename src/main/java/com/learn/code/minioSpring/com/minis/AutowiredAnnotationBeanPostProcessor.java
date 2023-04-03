@@ -71,6 +71,7 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
      *
      * @param beanFactory
      */
+    @Override
     public void setBeanFactory(AbstractAutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }

@@ -3,7 +3,7 @@ package com.learn.code.minioSpring.com.minis;
 import java.util.Map;
 
 /**
- * 数组bean工厂
+ * 数组bean工厂,获取bean数组
  */
 public interface ListableBeanFactory extends BeanFactory {
     boolean containsBeanDefinition(String beanName);
