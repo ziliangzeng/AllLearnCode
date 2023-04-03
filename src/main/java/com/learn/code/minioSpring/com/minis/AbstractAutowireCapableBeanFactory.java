@@ -3,7 +3,7 @@ package com.learn.code.minioSpring.com.minis;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutowireCapableBeanFactory extends AbstractBeanFactory {
+public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowiredCapableBeanFactory{
 
     private final List<AutowiredAnnotationBeanPostProcessor> beanPostProcessors = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
 
     @Override
-    Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName) {
+    public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) {
 
         Object result = existingBean;
         for (AutowiredAnnotationBeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
@@ -41,7 +41,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     }
 
     @Override
-    Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName) {
+    public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) {
         Object result = existingBean;
         for (AutowiredAnnotationBeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
             //多态，应该是AbstractBeanFactory类型的吧

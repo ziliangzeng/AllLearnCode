@@ -7,7 +7,7 @@ import java.util.List;
 
 public class XmlBeanDefinitionReader {
 
-    AutowireCapableBeanFactory beanFactory;
+    AbstractAutowireCapableBeanFactory beanFactory;
 
     /**
      * 后面看源码可以先看构造器，然后reader->load 这类型的方法啦，命名都是有规律的。
@@ -15,7 +15,7 @@ public class XmlBeanDefinitionReader {
      *
      * @param beanFactory
      */
-    public XmlBeanDefinitionReader(AutowireCapableBeanFactory beanFactory) {
+    public XmlBeanDefinitionReader(AbstractAutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 

@@ -2,9 +2,9 @@ package com.learn.code.minioSpring.com.minis;
 
 import java.lang.reflect.Field;
 
-public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcess {
+public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcessor {
 
-    private AutowireCapableBeanFactory beanFactory;
+    private AbstractAutowireCapableBeanFactory beanFactory;
 
 
     @Override
@@ -61,7 +61,7 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcess {
     }
 
 
-    public AutowireCapableBeanFactory getBeanFactory() {
+    public AbstractAutowireCapableBeanFactory getBeanFactory() {
         return beanFactory;
     }
 
@@ -71,7 +71,7 @@ public class AutowiredAnnotationBeanPostProcessor implements BeanPostProcess {
      *
      * @param beanFactory
      */
-    public void setBeanFactory(AutowireCapableBeanFactory beanFactory) {
+    public void setBeanFactory(AbstractAutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
 

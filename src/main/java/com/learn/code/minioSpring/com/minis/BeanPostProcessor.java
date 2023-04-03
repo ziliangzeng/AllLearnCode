@@ -1,6 +1,6 @@
 package com.learn.code.minioSpring.com.minis;
 
-public interface BeanPostProcess {
+public interface BeanPostProcessor {
 
     Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException;
     Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;

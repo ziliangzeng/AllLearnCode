@@ -1,7 +1,6 @@
 package com.learn.code.minioSpring.com.minis;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,9 +32,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
 
 
     //前后置处理器
-    abstract Object applyBeanPostProcessorBeforeInitialization(Object existingBean, String beanName);
+    abstract Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName);
 
-    abstract Object applyBeanPostProcessorAfterInitialization(Object existingBean, String beanName);
+    abstract Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName);
 
 
     /**
@@ -71,13 +70,13 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 registerBean(beanName, singleton);
 
                 //step1: postProcessBeforeInitialization
-                applyBeanPostProcessorBeforeInitialization(singleton, beanName);
+                applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
                 //step2: init-method 初始化方法吧
                 if(beanDefinition.getInitMethodName() != null && !beanDefinition.equals("")){
                     invokeInitMethod(beanDefinition, singleton);
                 }
                 //step3: postProcessAfterInitialization
-                applyBeanPostProcessorAfterInitialization(singleton, beanName);
+                applyBeanPostProcessorsAfterInitialization(singleton, beanName);
             }
         }
 
