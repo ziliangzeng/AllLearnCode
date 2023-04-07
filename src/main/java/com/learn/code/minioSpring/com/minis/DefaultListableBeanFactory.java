@@ -10,13 +10,14 @@ import java.util.Map;
  * 在这里已经有点晕了...
  * 还有就是假如子类和父类同时实现了一个接口,并且父类提供了实现,那么子类就不需要再实现了
  * 是这样子吗? 应该是要抽象父类才行吧?
- * {@link src/main/resources/img.png}
+ * {@link src/main/resources/inheritance system.png}
  *
  * @Auther: qsx00
  * @Date: 2023/4/3 22:54
  * @Description:
  */
-public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory {
+public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
+        implements ConfigurableListableBeanFactory {
     @Override
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
 
@@ -47,6 +48,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         return beanDefinitionNames.toArray(new String[0]);
     }
 
+    /**
+     * TODO 为什么不存起来的?
+     * @param type
+     * @return
+     */
     @Override
     public String[] getBeanNamesForType(Class<?> type) {
         List<String> result = new ArrayList<>();
@@ -83,6 +89,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         return result.toArray(new String[0]);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) {
 

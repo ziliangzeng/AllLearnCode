@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description:
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
-        implements BeanFactory, BeanDefinitionRegistry {
+        implements BeanFactory, BeanDefinitionRegistry,AutowiredCapableBeanFactory {
 
     public Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
     public List<String> beanDefinitionNames = new ArrayList<>();
@@ -31,10 +31,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
     }
 
 
+    //TODO 注释这里的话，下面的getBean() 方法有问题,是不是需要实现AutowiredCapableBeanFactory接口?
+    //TODO 我认为是这种写法的，当然可能有问题
     //前后置处理器
-    abstract Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName);
-
-    abstract Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName);
+//    abstract Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName);
+//
+//    abstract Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName);
 
 
     /**

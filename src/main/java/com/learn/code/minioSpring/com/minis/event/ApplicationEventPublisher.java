@@ -1,10 +1,10 @@
-package com.learn.code.minioSpring.com.minis;
+package com.learn.code.minioSpring.com.minis.event;
 
-import org.springframework.context.ApplicationEvent;
 
 /**
  * 事件发布者
  */
 public interface ApplicationEventPublisher {
     void publishEvent(ApplicationEvent event);
+    void addApplicationListener(ApplicationListener listener);
 }

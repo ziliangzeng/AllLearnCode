@@ -45,7 +45,7 @@ public class ClassPathXmlApplicationContext implements BeanFactory {
         //获取资源
         Resource resource = new ClassPathXmlResource(fileName);
         //创建beanFactory
-        AbstractAutowireCapableBeanFactory beanFactory = new AbstractAutowireCapableBeanFactory();
+        AbstractAutowireCapableBeanFactory beanFactory = new DefaultListableBeanFactory();
 //        BeanFactory beanFactory = new SimpleBeanFactory();
         //创建资源读取器，读取并且解析资源，插入到beanFactory中
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
