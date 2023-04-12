@@ -291,6 +291,15 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 ArgumentValue indexedArgumentValue = constructorArgumentValues.getIndexedArgumentValue(i);
                 String type = indexedArgumentValue.getType();
                 Object value = indexedArgumentValue.getValue();
+                /**
+                 * TODO 这里我有个问题,就是构造器注入是否可以注入其他bean的呢?
+                 * 下面的逻辑都没有getbean的操作的,这里是不是有问题的呢?
+                 *
+                 * TODO 这里需要增加逻辑,对XML的第三方bean 的注入处理
+                 * 然后就是使用@Autowired的形式对构造器bean注入的处理
+                 * 这个打算作为自己来实现吧!
+                 */
+
                 if ("String".equals(type) || "java.lang.String".equals(type)) {
                     paramTypes[i] = String.class;
                     paramValues[i] = value;
