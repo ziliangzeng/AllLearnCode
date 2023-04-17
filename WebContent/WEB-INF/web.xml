@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns:web="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4" id="WebApp_ID">
+
+    <servlet>
+        <servlet-name>minisMVC</servlet-name>
+        <!--指定servlet对应类，web程序核心代码-->
+        <servlet-class>com.miniSpring.mvc.web.MiniSpringDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <!--初始化配置文件地址，所有的配置参数都由这里引入-->
+            <param-value>/WEB-INF/minisMVC-servlet.xml</param-value>
+        </init-param>
+        <!--当值大于等于0时，容器启动时加载该Servlet，且值越小启动优先级越高，
+        如果为负数，则容器启动时不会加载该Servlet-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <!--Servlet自定义名称，且<servlet-mapping> 与 <servlet> 中的<servlet-name>
+        配置一样，表示用<servlet>标签中配置的Servlet进行URL请求拦截与映射匹配-->
+        <servlet-name>minisMVC</servlet-name>
+        <!--/表示拦截所有URL-->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>

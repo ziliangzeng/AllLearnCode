@@ -304,6 +304,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                  * TODO 这里需要增加逻辑,对XML的第三方bean 的注入处理
                  * 然后就是使用@Autowired的形式对构造器bean注入的处理
                  * 这个打算作为自己来实现吧!
+                 *
+                 *
+                 * 已完成处理!
                  */
                 if (!isRef) {
                     if ("String".equals(type) || "java.lang.String".equals(type)) {
