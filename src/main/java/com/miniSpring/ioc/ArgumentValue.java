@@ -9,16 +9,18 @@ public class ArgumentValue {
     private Object value;
     private String type;
     private String name;
+    private Boolean isRef;
 
     public ArgumentValue(Object value,String type){
         this.value = value;
         this.type = type;
     }
 
-    public ArgumentValue(String name,Object value, String type) {
+    public ArgumentValue(String name,Object value, String type,Boolean isRef) {
         this.value = value;
         this.type = type;
         this.name = name;
+        this.isRef = isRef;
     }
 
     public Object getValue() {
@@ -43,5 +45,13 @@ public class ArgumentValue {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getIsRef() {
+        return isRef;
+    }
+
+    public void setIsRef(Boolean isRef) {
+        isRef = isRef;
     }
 }

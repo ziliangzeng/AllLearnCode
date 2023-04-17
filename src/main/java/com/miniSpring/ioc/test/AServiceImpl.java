@@ -15,9 +15,10 @@ public class AServiceImpl implements AService{
     private BaseService ref1;
 
 
-    public AServiceImpl(String name,int level){
+    public AServiceImpl(String name,int level,BaseService ref1){
         this.name = name;
         this.level = level;
+        this.ref1 = ref1;
     }
 
     public void setProperty1(String property1) {
@@ -52,13 +53,13 @@ public class AServiceImpl implements AService{
         this.level = level;
     }
 
-    public BaseService getRef1() {
-        return ref1;
-    }
-
-    public void setRef1(BaseService ref1) {
-        this.ref1 = ref1;
-    }
+//    public BaseService getRef1() {
+//        return ref1;
+//    }
+//
+//    public void setRef1(BaseService ref1) {
+//        this.ref1 = ref1;
+//    }
 
     @Override
     public void sayHello() {

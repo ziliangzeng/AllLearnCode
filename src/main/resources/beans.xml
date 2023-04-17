@@ -5,7 +5,8 @@
         <property type="String" name="property2" value="Hello Earth!"/>
         <constructor-arg type="String" name="name" value="abc"/>
         <constructor-arg type="int" name="level" value="3"/>
-        <property type="com.miniSpring.ioc.test.BaseService" name="ref1" ref="baseservice"/>
+<!--        <property type="com.miniSpring.ioc.test.BaseService" name="ref1" ref="baseservice"/>-->
+        <constructor-arg type="com.miniSpring.ioc.test.BaseService" name="ref1" ref="baseservice"/>
     </bean>
 
     <bean id="basebaseservice" class="com.miniSpring.ioc.test.BaseBaseService">
@@ -13,6 +14,7 @@
     </bean>
 
     <bean id="baseservice" class="com.miniSpring.ioc.test.BaseService">
+        <!--不对哦，这里已经处理完这个循环依赖的问题了，后面验证一下-->
 <!--        <property type="com.miniSpring.ioc.test.BaseBaseService" name="bbs" ref="basebaseservice"/>-->
     </bean>
 

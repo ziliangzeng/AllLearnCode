@@ -58,11 +58,6 @@ public class XmlBeanDefinitionReader {
             }
             beanDefinition.setPropertyValues(pvs);
 
-            //循环依赖递归
-            //那么创建对象createBean的时候就需要不断的循环下去去创建对象，直到所有的对象都创建完毕。
-            //当list集合泛型为String的时候,那么不需要指定数组的大小,可以直接new String[0] TODO 为什么？
-            String[] refArray = refs.toArray(new String[0]);
-            beanDefinition.setDependsOn(refArray);
 
             List<Element> constructorElements = element.elements("constructor-arg");
             ArgumentValues argumentValues = new ArgumentValues();
@@ -70,9 +65,28 @@ public class XmlBeanDefinitionReader {
                 String name = e.attributeValue("name");
                 String value = e.attributeValue("value");
                 String type = e.attributeValue("type");
-                argumentValues.addArgumentValue(new ArgumentValue(name, value, type));
+                String ref = e.attributeValue("ref");
+                String pv = "";
+                boolean isRef = false;
+                if(value != null && !value.equals("")) {
+                    isRef = false;
+                    pv = value;
+                }else{
+                    isRef = true;
+                    pv = ref;
+                    refs.add(ref);
+                }
+
+                argumentValues.addArgumentValue(new ArgumentValue(name, pv, type, isRef));
             }
             beanDefinition.setConstructorArgumentValues(argumentValues);
+
+            //循环依赖递归
+            //那么创建对象createBean的时候就需要不断的循环下去去创建对象，直到所有的对象都创建完毕。
+            //当list集合泛型为String的时候,那么不需要指定数组的大小,可以直接new String[0] TODO 为什么？
+            String[] refArray = refs.toArray(new String[0]);
+            beanDefinition.setDependsOn(refArray);
+
 
             this.beanFactory.registerBeanDefinition(beanDefinition.getId(), beanDefinition);
         }

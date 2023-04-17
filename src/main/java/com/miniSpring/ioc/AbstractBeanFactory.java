@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description:
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
-        implements BeanFactory, BeanDefinitionRegistry,AutowiredCapableBeanFactory {
+        implements BeanFactory, BeanDefinitionRegistry, AutowiredCapableBeanFactory {
 
     public Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
     public List<String> beanDefinitionNames = new ArrayList<>();
@@ -23,8 +23,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
 
     public void AbstractBeanFactory() {
     }
-    
-    public void refresh(){
+
+    public void refresh() {
         for (String beanDefinitionName : beanDefinitionNames) {
             getBean(beanDefinitionName);
         }
@@ -41,7 +41,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
 
     /**
      * 生命周期:
-     *
+     * <p>
      * 1. 实例化 --> constructor()构造器方法
      * 2. 属性注入 --> 反射调用set Param方法 popularBean
      * 2.0.0 实现了BeanNameAware，BeanFactoryAware接口的setBeanName，setBeanFactory方法(暂无)
@@ -49,6 +49,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
      * 3.0.1 实现了InitializingBean接口的afterPropertiesSet方法（暂无）
      * 3. 初始化  --> init-method
      * 3.1.0 postProcessAfterInitialization bean后置处理器
+     *
      * @param beanName
      * @return
      */
@@ -74,7 +75,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 //step1: postProcessBeforeInitialization
                 applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
                 //step2: init-method 初始化方法吧
-                if(beanDefinition.getInitMethodName() != null && !beanDefinition.equals("")){
+                if (beanDefinition.getInitMethodName() != null && !beanDefinition.equals("")) {
                     invokeInitMethod(beanDefinition, singleton);
                 }
                 //step3: postProcessAfterInitialization
@@ -88,6 +89,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
     /**
      * 这里有点奇怪
      * 为什么是调用BeanDefinition的Class来获取method的？不应该所以singleton的class吗？
+     *
      * @param beanDefinition
      * @param singleton
      */
@@ -108,7 +110,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
     }
 
     @Override
-    public Boolean containsBean(String beanName){
+    public Boolean containsBean(String beanName) {
         return beanDefinitionMap.containsKey(beanName);
     }
 
@@ -131,20 +133,20 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
          * TODO 待解答
          *
          */
-        if(beanDefinition.isLazyInit()){
+        if (beanDefinition.isLazyInit()) {
             getBean(name);
         }
     }
 
     @Override
-    public void removeBeanDefinition(String beanName){
+    public void removeBeanDefinition(String beanName) {
         beanDefinitionMap.remove(beanName);
         beanDefinitionNames.remove(beanName);
         removeSingleton(beanName);
     }
 
     @Override
-    public BeanDefinition getBeanDefinition(String beanName){
+    public BeanDefinition getBeanDefinition(String beanName) {
         return beanDefinitionMap.get(beanName);
     }
 
@@ -167,7 +169,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
     public Class<?> getType(String beanName) {
         return beanDefinitionMap.get(beanName).getClass();
     }
-
 
 
     private Object createBean(BeanDefinition beanDefinition) {
@@ -194,7 +195,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
 
         return o;
     }
-
 
 
     private void populateBean(BeanDefinition beanDefinition, Class<?> clazz, Object o) {
@@ -242,7 +242,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                     paramValues[0] = value;
                 } else {
                     try {
-                        paramTypes[0] = Class.forName((String) type);
+                        /**
+                         * 调用forName("X")会导致名为X的类被初始化？
+                         * 会导致类加载，类加载就会执行静态代码块。
+                         * 如果你只想让某个类，只执行静态代码块，可以使用此方法。
+                         */
+                        paramTypes[0] = Class.forName(type);
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -250,7 +255,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                     //is ref,create the dependency bean
                 }
 
-                String methodName = "set" + name.substring(0,1).toUpperCase() + name.substring(1);
+                String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
 
                 try {
                     Method method = clazz.getMethod(methodName, paramTypes);
@@ -291,6 +296,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                 ArgumentValue indexedArgumentValue = constructorArgumentValues.getIndexedArgumentValue(i);
                 String type = indexedArgumentValue.getType();
                 Object value = indexedArgumentValue.getValue();
+                boolean isRef = indexedArgumentValue.getIsRef();
                 /**
                  * TODO 这里我有个问题,就是构造器注入是否可以注入其他bean的呢?
                  * 下面的逻辑都没有getbean的操作的,这里是不是有问题的呢?
@@ -299,22 +305,44 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                  * 然后就是使用@Autowired的形式对构造器bean注入的处理
                  * 这个打算作为自己来实现吧!
                  */
+                if (!isRef) {
+                    if ("String".equals(type) || "java.lang.String".equals(type)) {
+                        paramTypes[i] = String.class;
+                        paramValues[i] = value;
+                    } else if ("Integer".equals(type) || "java.lang.Integer".equals(type)) {
+                        paramTypes[i] = Integer.class;
+                        paramValues[i] = Integer.valueOf((String) value);
+                    } else if ("int".equals(type)) {
+                        paramTypes[i] = int.class;
+                        paramValues[i] = Integer.valueOf((String) value);
+                    } else {
+                        paramTypes[i] = String.class;
+                        paramValues[i] = value;
+                    }
 
-                if ("String".equals(type) || "java.lang.String".equals(type)) {
-                    paramTypes[i] = String.class;
-                    paramValues[i] = value;
-                } else if ("Integer".equals(type) || "java.lang.Integer".equals(type)) {
-                    paramTypes[i] = Integer.class;
-                    paramValues[i] = Integer.valueOf((String) value);
-                } else if ("int".equals(type)) {
-                    paramTypes[i] = int.class;
-                    paramValues[i] = Integer.valueOf((String) value);
                 } else {
-                    paramTypes[i] = String.class;
-                    paramValues[i] = value;
+                    //引用
+                    try {
+                        /*
+                         * TODO 这里无法处理这个循环依赖问题
+                         *  使用@Lazy解决循环依赖问题？
+                         *
+                         * */
+                        paramTypes[i] = Class.forName(type);
+                        paramValues[i] = getBean((String) value);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+
             }
             try {
+                /**
+                 * 如果是使用的@Service的形式的，没有使用xml，如何进行构造器注入的。
+                 * 首先是@Autowired？ 然后就是拿到构造器的参数
+                 * 参数获取到了之后进行对象的getBean？
+                 * 最后调用构造器方法？
+                 */
                 Constructor constructor = clazz.getConstructor(paramTypes);
                 o = constructor.newInstance(paramValues);
             } catch (NoSuchMethodException e) {

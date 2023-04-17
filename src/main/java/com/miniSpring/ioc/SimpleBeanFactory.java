@@ -72,16 +72,16 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
      * 也不算懒加载吧，只是在这里进行了注册，之后直接拿
      * 调用这个refresh() 可以对当前所有的资源进行注册
      */
-    @Override
-    public void refresh(){
-        for (String beanName : beanDefinitionNames) {
-            try {
-                getBean(beanName);
-            } catch (BeansException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    @Override
+//    public void refresh(){
+//        for (String beanName : beanDefinitionNames) {
+//            try {
+//                getBean(beanName);
+//            } catch (BeansException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 
 
 
@@ -241,7 +241,6 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
                 //应该不需要在实体类创建一个按照顺序来的构造器吧？
                 //Constructor 就是新创建一个构造器,构造函数.所以argumentValues.name不重要(不需要),因为对于用户来讲是透明的.
 
-
                 //翻看Class#newInstance()的源码,发现是调用了Constructor#newInstance()的方法.
                 //所以本质上是一个东西，只不过Class#newInstance()是默认调用无参构造器的.
                 obj = con.newInstance(paramValues);
@@ -268,7 +267,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
     /**
      * 这里需要外部的资源reader调用，将bean定义注册进来
      *
-     * @param beanDefinition
+     * @param beanName
      */
 //    @Override
 //    public void registerBeanDefinition(BeanDefinition beanDefinition) {
