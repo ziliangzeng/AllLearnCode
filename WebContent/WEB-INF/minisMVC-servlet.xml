@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<beans>
+<!--<beans>-->
 
-    <bean id="/helloWorld" class="com.miniSpring.mvc.web.HelloWorldBean" value="doGet" />
+<!--    <bean id="/helloWorld" class="com.miniSpring.mvc.web.HelloWorldBean" value="doGet" />-->
 
-</beans>
+<!--</beans>-->
+
+<components>
+    <component-scan base-package="com.miniSpring.mvc"/>
+</components>

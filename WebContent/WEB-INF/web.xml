@@ -8,10 +8,12 @@
     <servlet>
         <servlet-name>minisMVC</servlet-name>
         <!--指定servlet对应类，web程序核心代码-->
-        <servlet-class>com.miniSpring.mvc.web.MiniSpringDispatcherServlet</servlet-class>
+        <servlet-class>com.miniSpring.mvc.web.DispatcherServlet</servlet-class>
+        <!--对应上了DispatcherServlet中的config.getInitParameter-->
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <!--初始化配置文件地址，所有的配置参数都由这里引入-->
+            <!--这里是不是有问题呢，跳转不过去-->
             <param-value>/WEB-INF/minisMVC-servlet.xml</param-value>
         </init-param>
         <!--当值大于等于0时，容器启动时加载该Servlet，且值越小启动优先级越高，
