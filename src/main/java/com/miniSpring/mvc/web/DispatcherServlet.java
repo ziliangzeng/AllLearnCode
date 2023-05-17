@@ -61,6 +61,7 @@ public class DispatcherServlet extends HttpServlet {
         super.init(config);
         /**
          * 这里对应上了web.xml中的配置
+         *
          *         <init-param>
          *             <param-name>contextConfigLocation</param-name>
          *             <!-- 初始化配置文件地址，所有的配置参数都由这里引入 -->
