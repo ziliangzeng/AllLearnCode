@@ -67,6 +67,10 @@ public class DispatcherServlet extends HttpServlet {
          *             <!-- 初始化配置文件地址，所有的配置参数都由这里引入 -->
          *             <param-value>/WEB-INF/minisMVC-servlet.xml</param-value>
          *         </init-param>
+         *
+         *         这里的getInitParameter 跟ServletContext.getInitParameter的又不同哦
+         *
+         *
          */
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;

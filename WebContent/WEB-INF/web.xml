@@ -21,6 +21,14 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>beans.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>com.miniSpring.mvc.web.ContextLoaderListener</listener-class>
+    </listener>
+
     <servlet-mapping>
         <!--Servlet自定义名称，且<servlet-mapping> 与 <servlet> 中的<servlet-name>
         配置一样，表示用<servlet>标签中配置的Servlet进行URL请求拦截与映射匹配-->

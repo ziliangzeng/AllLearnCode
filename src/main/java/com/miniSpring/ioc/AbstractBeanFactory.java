@@ -330,6 +330,8 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                          * TODO 这里无法处理这个循环依赖问题
                          *  使用@Lazy解决循环依赖问题？
                          *
+                         * 解决不了，直接报错?!
+                         *
                          * */
                         paramTypes[i] = Class.forName(type);
                         paramValues[i] = getBean((String) value);
