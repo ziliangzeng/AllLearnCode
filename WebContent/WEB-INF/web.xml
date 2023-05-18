@@ -4,7 +4,18 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4" id="WebApp_ID">
+    <!--servletContext 最先初始化这里，作为init参数，然后存入initParam-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>beans.xml</param-value>
+    </context-param>
+   <!-- 然后执行listener，这里用作IOC容器的启动   -->
+    <listener>
+        <listener-class>com.miniSpring.mvc.web.ContextLoaderListener</listener-class>
+    </listener>
+   <!-- 应该还有个filter的，但是现在还没有   -->
 
+    <!--  然后到servlet  -->
     <servlet>
         <servlet-name>minisMVC</servlet-name>
         <!--指定servlet对应类，web程序核心代码-->
@@ -20,14 +31,6 @@
         如果为负数，则容器启动时不会加载该Servlet-->
         <load-on-startup>1</load-on-startup>
     </servlet>
-
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>beans.xml</param-value>
-    </context-param>
-    <listener>
-        <listener-class>com.miniSpring.mvc.web.ContextLoaderListener</listener-class>
-    </listener>
 
     <servlet-mapping>
         <!--Servlet自定义名称，且<servlet-mapping> 与 <servlet> 中的<servlet-name>

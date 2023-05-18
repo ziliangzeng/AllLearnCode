@@ -57,6 +57,8 @@ public class ContextLoaderListener implements ServletContextListener {
         //这里是拿到web.xml里面的配置文件参数属性吧
         //获取ioc容器的路径
         String configLocation = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
+        //那我是不是理解为springboot理解为内嵌的tomcat启动的时候，会去读取配置文件，然后去初始化容器，然后去初始化servlet
+        //
         WebApplicationContext wac = new AnnotationConfigWebApplicationContext(configLocation);
         wac.setServletContext(servletContext);
         this.webApplicationContext = wac;

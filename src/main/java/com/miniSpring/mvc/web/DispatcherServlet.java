@@ -1,6 +1,8 @@
 package com.miniSpring.mvc.web;
 
 
+import com.miniSpring.ioc.BeansException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,9 +52,7 @@ public class DispatcherServlet extends HttpServlet {
     private Map<String,Method> mappingMethods = new HashMap<>();
 
 
-
-    private Map<String, MappingValue> mappingValues;
-    private Map<String, Class<?>> mappingClz = new HashMap<>();
+    private WebApplicationContext webApplicationContext;
 
 
     private String sContextConfigLocation;
@@ -72,6 +72,10 @@ public class DispatcherServlet extends HttpServlet {
          *
          *
          */
+
+        //设置IOC容器对象
+        this.webApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;
 
@@ -84,7 +88,7 @@ public class DispatcherServlet extends HttpServlet {
         }
         //资源加载和解析
 
-        packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
+        this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
 
 
         Refresh();
@@ -116,12 +120,14 @@ public class DispatcherServlet extends HttpServlet {
                 /**
                  * 没错，TODO  需要处理这里,需要拿到ioc容器里面的对象，因为里面的构造器和@Autowired都是已经注入完毕的
                  *
+                 * 这样子就是解决了IOC联动的问题了
+                 *
                  */
-                obj = clz.newInstance();
+//                obj = clz.newInstance();
+                obj = webApplicationContext.getBean(controllerName);
+
                 controllerObjs.put(controllerName,obj);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
+            } catch (BeansException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -248,7 +254,6 @@ public class DispatcherServlet extends HttpServlet {
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-
 
         response.getWriter().append(invoke.toString());
     }
