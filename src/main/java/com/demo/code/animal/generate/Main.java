@@ -3,6 +3,7 @@ package com.demo.code.animal.generate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -15,9 +16,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String childDataPath = "/videoCode/44130200451320002011";
-        String videoCode = childDataPath.substring(childDataPath.lastIndexOf("/") + 1);
-        System.out.println(videoCode);
+        Optional.empty()
+
+
     }
 
 }

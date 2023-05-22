@@ -53,6 +53,7 @@ public class DispatcherServlet extends HttpServlet {
 
 
     private WebApplicationContext webApplicationContext;
+    private WebApplicationContext parentApplicationContext;
 
 
     private String sContextConfigLocation;
@@ -74,7 +75,7 @@ public class DispatcherServlet extends HttpServlet {
          */
 
         //设置IOC容器对象
-        this.webApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        this.parentApplicationContext = (WebApplicationContext) this.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 
         sContextConfigLocation = config.getInitParameter("contextConfigLocation");
         URL xmlPath = null;
@@ -90,6 +91,7 @@ public class DispatcherServlet extends HttpServlet {
 
         this.packageNames = XmlScanComponentHelper.getNodeValue(xmlPath);
 
+        this.webApplicationContext = new AnnotationConfigWebApplicationContext(this.sContextConfigLocation,this.parentApplicationContext);
 
         Refresh();
     }

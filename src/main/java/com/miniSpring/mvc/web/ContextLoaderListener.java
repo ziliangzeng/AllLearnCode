@@ -59,13 +59,18 @@ public class ContextLoaderListener implements ServletContextListener {
         String configLocation = servletContext.getInitParameter(CONFIG_LOCATION_PARAM);
         //那我是不是理解为springboot理解为内嵌的tomcat启动的时候，会去读取配置文件，然后去初始化容器，然后去初始化servlet
         //
+        /**
+         * TODO 这里其实是不是可以直接从外部引用的呢，然后直接注入，这样子就可以实现复用了？
+         * 但是这样子就要保证外部引用的applicationContext初始化,
+         * 但是现在java程序都是(?)在Servlet容器中运行的，所以在这里初始化也没有问题吧
+         *
+         */
         WebApplicationContext wac = new AnnotationConfigWebApplicationContext(configLocation);
         wac.setServletContext(servletContext);
         this.webApplicationContext = wac;
         //这里是给全局参数设值?
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
     }
-
 
 
 }
