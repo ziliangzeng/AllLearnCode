@@ -16,6 +16,9 @@ import java.util.Map;
 
 /**
  * 居然是直接继承了ClassPathXmlApplicationContext 实现了，是我狭隘了哈哈哈
+ *
+ *
+ * 后面又改了。继承AbstractApplicationContext
  */
 public class AnnotationConfigWebApplicationContext extends AbstractApplicationContext implements WebApplicationContext {
 
@@ -69,11 +72,39 @@ public class AnnotationConfigWebApplicationContext extends AbstractApplicationCo
          * 上面已经修改了，不继承ClassPathXmlApplicationContext了
          * 而是选择继承AbstractApplicationContext，自己实现一套IOC？
          *
+         * 这里还挺重要的呢
+         * public Object getBean(String beanName) throws BeansException {
+         *   Object result = super.getBean(beanName);
+         *   if (result == null) {
+         *   result = this.parentBeanFactory.getBean(beanName);
+         *   }
+         *   return result;
+         * }
+         *
          */
         DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
         this.beanFactory = bf;
         this.beanFactory.setParent(this.parentApplicationContext.getBeanFactory());
         //往beanFactory中注册bean
+        /**
+         * 这里还是loadController的那一套逻辑
+         * 但是IOC不是走的这一套逻辑吧
+         * 走的XML逻辑
+         * 所以这里需要改动？？
+         *
+         * 不是哦，你要回头看一下 <beans.xml/>
+         * 里面也是 定义了一个<bean/>而已
+         * 那么就是问题了，这里的逻辑是一样的
+         * 也是注册到BeanDefinition里面去
+         *
+         * 但是构造器，属性这些怎么注入的，需要回头看一下ClassPathXmlApplicationContext！
+         * 现在就看
+         *
+         * 看了一下确实是缺少了property的定义属性的，这个应该是在下面进行迭代的吧
+         *
+         * 好吧，最后是通过new XmlWebApplicationContext() 来解决的.
+         *
+         */
         loadBeanDefinitions(controllerNames);
 
         if (true) {
@@ -94,6 +125,9 @@ public class AnnotationConfigWebApplicationContext extends AbstractApplicationCo
             this.beanFactory.registerBeanDefinition(beanId, beanDefinition);
         }
     }
+
+
+
 
     public void setParent(WebApplicationContext parentApplicationContext) {
         this.parentApplicationContext = parentApplicationContext;

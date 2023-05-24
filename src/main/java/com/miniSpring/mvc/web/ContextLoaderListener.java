@@ -65,7 +65,7 @@ public class ContextLoaderListener implements ServletContextListener {
          * 但是现在java程序都是(?)在Servlet容器中运行的，所以在这里初始化也没有问题吧
          *
          */
-        WebApplicationContext wac = new AnnotationConfigWebApplicationContext(configLocation);
+        WebApplicationContext wac = new XmlWebApplicationContext(configLocation);
         wac.setServletContext(servletContext);
         this.webApplicationContext = wac;
         //这里是给全局参数设值?

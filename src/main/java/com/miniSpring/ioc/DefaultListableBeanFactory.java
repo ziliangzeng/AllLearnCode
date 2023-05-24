@@ -22,6 +22,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     ConfigurableListableBeanFactory parentBeanFactory;
 
+
+    public Object getBean(String beanName){
+        Object bean = super.getBean(beanName);
+        if(bean == null){
+            try {
+                bean = this.parentBeanFactory.getBean(beanName);
+            } catch (BeansException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return bean;
+    }
+
+
+
     public void setParent(ConfigurableListableBeanFactory beanFactory) {
         this.parentBeanFactory = beanFactory;
     }
