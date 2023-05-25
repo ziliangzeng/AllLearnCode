@@ -24,6 +24,20 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
+    /**
+     * getBean()
+     *
+     * 两个方向，BeanFactory是实际上的作用，
+     * ApplicationContext是组合beanFactory然后获取到组合的beanFactory，再去进行getBean()
+     *
+     * 所以追踪源码的时候要根据实际情况进行分析
+     *
+     *
+     *
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public Object getBean(String beanName) throws BeansException {
         return getBeanFactory().getBean(beanName);

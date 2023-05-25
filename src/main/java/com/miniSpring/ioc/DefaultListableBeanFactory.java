@@ -20,10 +20,47 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
         implements ConfigurableListableBeanFactory {
 
 
+    /**
+     * TODO 为什么parentBeanFactory是ConfigurableListableBeanFactory类型的？
+     *
+     * 但是 ConfigurableListableBeanFactory 没有实现所有AbstractAutowireCapableBeanFactory的全部接口吧？
+     *
+     * TODO
+     * 我觉得我为什么提出这个问题，就是我传入ConfigurableListableBeanFactory的接口，那么调用例如getBean()方法
+     * 是否会调用父类的getBean方法的？
+     * 并且应该是不能调用接口没有定义的方法的吧？！！！
+     *
+     * bean = this.parentBeanFactory.getBean(beanName);
+     * 这里是不是有问题？ 这里是调用那个getBean方法呢？
+     *
+     *
+     *
+     * 按照我的理解，首先就是MVC的applicationContext AnnotationConfigWebApplicationContext
+     * 他是自定义了DefaultListableBeanFactory
+     * 然后调用下面的getBean方法。
+     * 第一步 super.getBean()
+     * 应该是拿的MVC容器的bean
+     * 如果没有拿到的话，
+     * 再去调用注入的BeanFactory
+     *
+     * AnnotationConfigWebApplicationContext#this.beanFactory.setParent(this.parentApplicationContext.getBeanFactory());
+     * 他也是一个DefaultListableBeanFactory，然后又是调用下面的getBean方法
+     * 然后就是从IOC里面去拿IOC容器的bean，如果还拿不到，直接报错不存在bean。
+     * 因为他没有父容器，所以就是直接报错了。
+     *
+     *
+     *
+     */
     ConfigurableListableBeanFactory parentBeanFactory;
 
 
     public Object getBean(String beanName){
+        //super. 调用AbstractBeanFactory的getBean方法,通用方法
+        /**
+         * 来做一下假设，
+         * 首先 应该是先拿到WebApplicationContext的实例
+         * 拿不到，再去拿IOC的实例
+         */
         Object bean = super.getBean(beanName);
         if(bean == null){
             try {
