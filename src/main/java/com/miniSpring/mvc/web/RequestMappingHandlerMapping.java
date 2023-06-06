@@ -10,6 +10,10 @@ public class RequestMappingHandlerMapping implements HandlerMapping{
     WebApplicationContext wac;
     private final MappingRegistry mappingRegistry = new MappingRegistry();
 
+    /**
+     * 在DispatcherServlet中调用吧
+     * @param wac
+     */
     public RequestMappingHandlerMapping(WebApplicationContext wac) {
         this.wac = wac;
         initMapping();

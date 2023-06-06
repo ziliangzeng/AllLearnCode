@@ -1,5 +1,11 @@
 package com.miniSpring.ioc;
 
+/**
+ * 他应该是属于方法属性，
+ * 构造器是另外的属性
+ * 很明显，MVC调用的其实也是方法，
+ * 所以封装的也是这个类
+ */
 public class PropertyValue {
 
     private final String type;
