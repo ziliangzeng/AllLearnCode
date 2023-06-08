@@ -1,8 +1,10 @@
 package com.miniSpring.mvc.web;
 
 import com.miniSpring.ioc.PropertyValues;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public class WebDataBinder {
 
@@ -14,9 +16,9 @@ public class WebDataBinder {
         this(target,"");
     }
 
-    public WebDataBinder(Object target,String objectName){
+    public WebDataBinder(Object target,String targetName){
         this.target = target;
-        this.objectName = objectName;
+        this.objectName = targetName;
         this.clz = this.target.getClass();
     }
 
@@ -41,6 +43,13 @@ public class WebDataBinder {
         PropertyValues mpvs = assignParameters(request);
         addBindValues(mpvs,request);
         doBind(mpvs);
+    }
+
+    private PropertyValues assignParameters(HttpServletRequest request) {
+
+        Map<String, Object> map = WebUtils.getParametersStartingWith(request, "");
+        return new PropertyValues(map);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.miniSpring.ioc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PropertyValues {
 
@@ -10,6 +11,17 @@ public class PropertyValues {
     public PropertyValues() {
         propertyValueList = new ArrayList<>();
     }
+
+    /**
+     * TODO 如何映射呢
+     * 可知的是name value
+     * type的话 可以通过value 获取到？
+     * @param map
+     */
+    public PropertyValues(Map<String,Object> map){
+        propertyValueList = null;
+    }
+
 
     public List<PropertyValue> getPropertyValueList() {
         return propertyValueList;
