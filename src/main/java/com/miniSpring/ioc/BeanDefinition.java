@@ -3,6 +3,13 @@ package com.miniSpring.ioc;
 /**
  * BeanDefinition
  * 用来描述bean的信息
+ *
+ * TODO interface 是一个BeanDefinition吗?
+ * 那么扫描的时候 interface是定义成为什么的呢?
+ * 例如OpenFeign中的个钟@FeignClient 的接口是如何注入的
+ * 是不是说其实注入的还是他得到实现类的呢？
+ *
+ *
  */
 public class BeanDefinition {
 
