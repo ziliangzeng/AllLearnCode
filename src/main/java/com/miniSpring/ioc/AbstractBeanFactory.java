@@ -255,6 +255,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry
                     //is ref,create the dependency bean
                 }
 
+                //TODO 这里也可以改成getDeclaredField()的形式进行设置吧？ 后面需要修改测试一下
+                //TODO 我的理解就是，可以是可以但是尽量使用public的方法，不要太多侵入性的操作
+
                 String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
 
                 try {
