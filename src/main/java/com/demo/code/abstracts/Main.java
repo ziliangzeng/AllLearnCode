@@ -1,10 +1,23 @@
 package com.demo.code.abstracts;
 
+import java.util.Optional;
+
 public class Main {
     public static void main(String[] args) {
-        Dog dog = new Dog();
-        dog.eat();
-        dog.eat(new Food("food1", "type1"), "name");
-        dog.eat(new Food("food2", "type2"));
+        String test = "test//test/test";
+
+        int i = nthIndexOf(test, "/", 2);
+        System.out.println(i);
+
     }
+
+
+    public static int nthIndexOf(String text, String target, int n) {
+        int index = text.indexOf(target);
+        while (index >= 0 && --n > 0) {
+            index = text.indexOf(target, index + 1);
+        }
+        return index;
+    }
+
 }

@@ -14,6 +14,7 @@ public class MyClass2 {
 
         } catch (Exception e) {
             System.out.println("tets");
+            throw e;
         }
     }
 
